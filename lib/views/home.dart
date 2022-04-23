@@ -11,6 +11,7 @@ class _HomePageState extends State<HomePage> {
   String sensorOne = "";
   String sensorTwo = "";
   bool isDataLoaded = false;
+  String noiseDetected = "";
 
   void getSensorsData() async {
     final ref = FirebaseDatabase.instance.ref();
@@ -87,30 +88,52 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Sensor 1
-                    SensorStatusContainer(
-                        size: _size,
-                        // backgroundColor: Colors.grey.shade200,
-                        backgroundColor: sensorOne == 'noiseDetected'
-                            ? Colors.red
-                            : Colors.grey.shade200,
-                        textColor: sensorOne == 'noiseDetected'
-                            ? Colors.white
-                            : Colors.black,
-                        sensorNumber: '1'),
+                    Column(
+                      children: [
+                        SensorStatusContainer(
+                            size: _size,
+                            // backgroundColor: Colors.grey.shade200,
+                            backgroundColor: sensorOne == 'noiseDetected'
+                                ? Colors.red
+                                : Colors.grey.shade200,
+                            textColor: sensorOne == 'noiseDetected'
+                                ? Colors.white
+                                : Colors.black,
+                            sensorNumber: '1'),
+                        Text(
+                          sensorOne == 'noiseDetected'
+                              ? "Noise Detected!"
+                              : noiseDetected,
+                          style: const TextStyle(
+                              fontFamily: "Poppins", color: Colors.red),
+                        ),
+                      ],
+                    ),
                     SizedBox(
                       height: _size.height / 7.3,
                       width: 10,
                     ),
                     // Sensor 2
-                    SensorStatusContainer(
-                        size: _size,
-                        backgroundColor: sensorTwo == 'noiseDetected'
-                            ? Colors.red
-                            : Colors.grey.shade200,
-                        textColor: sensorTwo == 'noiseDetected'
-                            ? Colors.white
-                            : Colors.black,
-                        sensorNumber: '2')
+                    Column(
+                      children: [
+                        SensorStatusContainer(
+                            size: _size,
+                            backgroundColor: sensorTwo == 'noiseDetected'
+                                ? Colors.red
+                                : Colors.grey.shade200,
+                            textColor: sensorTwo == 'noiseDetected'
+                                ? Colors.white
+                                : Colors.black,
+                            sensorNumber: '2'),
+                        Text(
+                          sensorTwo == 'noiseDetected'
+                              ? "Noise Detected!"
+                              : noiseDetected,
+                          style: const TextStyle(
+                              fontFamily: "Poppins", color: Colors.red),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ],
