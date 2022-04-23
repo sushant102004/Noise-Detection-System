@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "472898823403",
+    "firebase_url": "https://noisedetectionsystem-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "noisedetectionsystem",
+    "storage_bucket": "noisedetectionsystem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472898823403:android:13a3eab8fcb1c3de844aae",
+        "android_client_info": {
+          "package_name": "com.noise.detection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "472898823403-n51tt0ti6livpl1ctc1oaeu7cmnuitlg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6dWShFl0qjDe9wxYo-jiYLP5OtPtgNWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "472898823403-n51tt0ti6livpl1ctc1oaeu7cmnuitlg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
