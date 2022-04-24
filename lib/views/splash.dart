@@ -12,12 +12,13 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
+    final _size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 100),
+            padding: EdgeInsets.only(top: _size.height / 7.3),
             child: Image.asset("assets/images/splashImage.png"),
           ),
           Row(
@@ -46,8 +47,8 @@ class _SplashState extends State<Splash> {
                 fontSize: 17,
                 fontWeight: FontWeight.w600),
           ),
-          const SizedBox(
-            height: 230,
+          SizedBox(
+            height: _size.height / 3.7,
           ),
           InkWell(
             onTap: () {
@@ -58,8 +59,8 @@ class _SplashState extends State<Splash> {
                       child: const HomePage()));
             },
             child: Container(
-              height: 50,
-              width: 150,
+              height: _size.height / 16,
+              width: _size.width / 3,
               decoration: BoxDecoration(
                   color: Colors.black, borderRadius: BorderRadius.circular(10)),
               child: const Center(
