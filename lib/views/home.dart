@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,8 +11,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String sensorOne = "";
   String sensorTwo = "";
-  bool isDataLoaded = false;
   String noiseDetected = "";
+  bool isDataLoaded = false;
 
   void getSensorsData() async {
     final ref = FirebaseDatabase.instance.ref();
@@ -28,6 +29,9 @@ class _HomePageState extends State<HomePage> {
           sensorOne = "Error In Database";
         });
       }
+      if (snapshot.value == 'noiseDetected') {
+        vibrateDevice();
+      }
     });
     // ignore: unused_local_variable
     final sensorTwoRef = ref.child('sensorTwo').onValue.listen((event) {
@@ -42,7 +46,14 @@ class _HomePageState extends State<HomePage> {
           sensorTwo = "Error In Database";
         });
       }
+      if (snapshot.value == 'noiseDetected') {
+        vibrateDevice();
+      }
     });
+  }
+
+  void vibrateDevice() {
+    Vibrate.vibrate();
   }
 
   @override
@@ -71,14 +82,6 @@ class _HomePageState extends State<HomePage> {
                 children: <TextSpan>[
               TextSpan(text: "Sensors", style: TextStyle(color: Colors.black))
             ])),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.refresh_outlined,
-                color: Colors.black,
-              ))
-        ],
       ),
       body: isDataLoaded
           ? Column(
