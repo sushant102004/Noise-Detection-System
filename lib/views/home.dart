@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,9 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String sensorOne = "";
-  String sensorTwo = "";
-  String noiseDetected = "";
+  int sensorOne = 0;
+  int sensorTwo = 0;
   bool isDataLoaded = false;
 
   void getSensorsData() async {
@@ -21,16 +22,12 @@ class _HomePageState extends State<HomePage> {
       var snapshot = event.snapshot;
       if (snapshot.exists) {
         setState(() {
-          sensorOne = snapshot.value.toString();
+          sensorOne = snapshot.value as int;
           isDataLoaded = true;
         });
-      } else {
-        setState(() {
-          sensorOne = "Error In Database";
-        });
       }
-      if (snapshot.value == 'noiseDetected') {
-        vibrateDevice();
+      if (snapshot.value == 1) {
+        playAudio();
       }
     });
     // ignore: unused_local_variable
@@ -38,28 +35,45 @@ class _HomePageState extends State<HomePage> {
       var snapshot = event.snapshot;
       if (snapshot.exists) {
         setState(() {
-          sensorTwo = snapshot.value.toString();
+          sensorTwo = snapshot.value as int;
           isDataLoaded = true;
         });
-      } else {
-        setState(() {
-          sensorTwo = "Error In Database";
-        });
       }
-      if (snapshot.value == 'noiseDetected') {
-        vibrateDevice();
+      if (snapshot.value == 1) {
+        playAudio();
       }
     });
+  }
+
+  void resetDatabaseValues() async {
+    DatabaseReference sensorOneRef = FirebaseDatabase.instance.ref('sensorOne');
+    DatabaseReference sensorTwoRef = FirebaseDatabase.instance.ref('sensorTwo');
+    sensorOneRef.set(0);
+    sensorTwoRef.set(0);
+  }
+
+  playAudio() async {
+    FlutterRingtonePlayer.playNotification();
   }
 
   void vibrateDevice() {
     Vibrate.vibrate();
   }
 
+  Timer? timer;
+
   @override
   void initState() {
     getSensorsData();
     super.initState();
+    timer = Timer.periodic(
+        const Duration(seconds: 5), (timer) => resetDatabaseValues());
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -94,12 +108,9 @@ class _HomePageState extends State<HomePage> {
                     SensorStatusContainer(
                         size: _size,
                         // backgroundColor: Colors.grey.shade200,
-                        backgroundColor: sensorOne == 'noiseDetected'
-                            ? Colors.red
-                            : Colors.grey.shade200,
-                        textColor: sensorOne == 'noiseDetected'
-                            ? Colors.white
-                            : Colors.black,
+                        backgroundColor:
+                            sensorOne == 1 ? Colors.red : Colors.grey.shade200,
+                        textColor: sensorOne == 1 ? Colors.white : Colors.black,
                         sensorNumber: '1'),
                     SizedBox(
                       height: _size.height / 7.3,
@@ -108,12 +119,9 @@ class _HomePageState extends State<HomePage> {
                     // Sensor 2
                     SensorStatusContainer(
                         size: _size,
-                        backgroundColor: sensorTwo == 'noiseDetected'
-                            ? Colors.red
-                            : Colors.grey.shade200,
-                        textColor: sensorTwo == 'noiseDetected'
-                            ? Colors.white
-                            : Colors.black,
+                        backgroundColor:
+                            sensorTwo == 1 ? Colors.red : Colors.grey.shade200,
+                        textColor: sensorTwo == 1 ? Colors.white : Colors.black,
                         sensorNumber: '2')
                   ],
                 ),
